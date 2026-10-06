@@ -1,0 +1,418 @@
+/* --- Layout --- */
+.form {
+  margin: 0;
+}
+
+.block {
+  padding: 22px 22px 24px;
+}
+
+.category {
+  margin: 0;
+  min-width: 0;
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+}
+
+/* --- Category heading --- */
+.categoryHead {
+  /* Floating a legend takes it off the fieldset border and into the flow. */
+  float: left;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 0;
+  text-align: center;
+}
+
+.number {
+  font-family: var(--hh-font-caps);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  color: var(--hh-gold);
+}
+
+.categoryTitle {
+  margin-top: 6px;
+  font-family: var(--hh-font-display);
+  font-size: 25px;
+  line-height: 1.15;
+  color: var(--hh-ink-display);
+}
+
+.tagline {
+  clear: both;
+  margin: 0 0 18px;
+  padding-top: 6px;
+  text-align: center;
+  font-family: var(--hh-font-body);
+  font-style: italic;
+  font-size: 16px;
+  line-height: 1.4;
+  color: var(--hh-ink-muted);
+}
+
+/* --- Fields --- */
+.label {
+  display: block;
+  margin-bottom: 4px;
+  font-family: var(--hh-font-caps);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--hh-ink-muted);
+}
+
+.labelSpaced {
+  margin-top: 16px;
+}
+
+.optional {
+  font-family: var(--hh-font-body);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 13px;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--hh-gold-dim);
+}
+
+/* Fields are ruled lines, not boxes. 20px type keeps iOS from zooming in. */
+.input {
+  width: 100%;
+  min-height: 44px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--hh-gold-rule);
+  border-radius: 0;
+  color: var(--hh-ink-display);
+  font-family: var(--hh-font-body);
+  font-style: italic;
+  font-size: 20px;
+  padding: 6px 2px;
+  outline: none;
+  transition: border-bottom-color 180ms ease;
+}
+
+.input:focus {
+  border-bottom-color: var(--hh-gold);
+}
+
+/* The underline is the focus ring: it thickens and turns gold, no box. */
+.input:focus-visible {
+  outline: none;
+  box-shadow: inset 0 -1px 0 var(--hh-gold);
+}
+
+.input::placeholder {
+  color: var(--hh-gold-dim);
+  opacity: 0.75;
+}
+
+.input[aria-invalid='true'] {
+  border-bottom-color: var(--hh-oxblood-bright);
+}
+
+.fieldError {
+  margin: 8px 0 0;
+  font-family: var(--hh-font-body);
+  font-style: italic;
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--hh-oxblood-bright);
+}
+
+.skip {
+  display: block;
+  margin: 14px auto 0;
+  min-height: 36px;
+  padding: 6px 10px;
+  background: none;
+  border: 0;
+  font-family: var(--hh-font-body);
+  font-size: 15px;
+  color: var(--hh-ink-muted);
+  text-decoration: underline;
+  text-decoration-color: var(--hh-gold-rule);
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+/* --- Autocomplete --- */
+.combo {
+  position: relative;
+}
+
+/* A printed slip tucked under the line: paper, keyline, no radius. */
+.suggestions {
+  position: absolute;
+  z-index: 5;
+  left: 0;
+  right: 0;
+  top: 100%;
+  margin: 2px 0 0;
+  padding: 0;
+  list-style: none;
+  background: var(--hh-paper-light);
+  border: 1px solid var(--hh-keyline);
+  box-shadow: 0 10px 22px rgba(13, 9, 6, 0.28);
+}
+
+.suggestions[hidden] {
+  display: none;
+}
+
+.suggestion {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-height: 48px;
+  justify-content: center;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--hh-gold-rule);
+}
+
+.suggestion:last-child {
+  border-bottom: 0;
+}
+
+.suggestionActive,
+.suggestion:active {
+  background: rgba(122, 86, 40, 0.14);
+}
+
+@media (hover: hover) {
+  .suggestion:hover {
+    background: rgba(122, 86, 40, 0.1);
+  }
+}
+
+.suggestionName {
+  font-family: var(--hh-font-body);
+  font-size: 18px;
+  color: var(--hh-ink-display);
+}
+
+.suggestionCostume {
+  font-family: var(--hh-font-body);
+  font-style: italic;
+  font-size: 14.5px;
+  color: var(--hh-ink-muted);
+}
+
+/* --- Actions --- */
+/* Off-screen rather than display:none — some bots skip hidden inputs. */
+.honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 22px;
+}
+
+.submit {
+  width: 100%;
+  min-height: 54px;
+  padding: 16px 0;
+  background: var(--hh-oxblood);
+  border: 1px solid var(--hh-oxblood-deep);
+  font-family: var(--hh-font-caps);
+  font-weight: 600;
+  font-size: 13.5px;
+  letter-spacing: 0.22em;
+  color: var(--hh-paper-light);
+  cursor: pointer;
+  transition: background 180ms ease;
+}
+
+@media (hover: hover) {
+  .submit:hover:not(:disabled) {
+    background: var(--hh-oxblood-deep);
+  }
+}
+
+.submit:disabled {
+  cursor: progress;
+}
+
+.secondary {
+  width: 100%;
+  min-height: 50px;
+  padding: 14px 0;
+  background: transparent;
+  border: 1px solid var(--hh-gold);
+  font-family: var(--hh-font-caps);
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  color: var(--hh-gold);
+  cursor: pointer;
+  transition: background 180ms ease;
+}
+
+@media (hover: hover) {
+  .secondary:hover {
+    background: rgba(122, 86, 40, 0.08);
+  }
+}
+
+.sendingLabel {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 13px;
+}
+
+/* The invite's marquee bulb chase, built from the deco diamond. */
+.chase {
+  display: inline-flex;
+  gap: 7px;
+}
+
+.chase span {
+  width: 6px;
+  height: 6px;
+  background: var(--hh-paper-light);
+  transform: rotate(45deg);
+  opacity: 0.28;
+  animation: hh-chase 1.05s ease-in-out infinite;
+}
+
+.chase span:nth-child(2) {
+  animation-delay: 0.17s;
+}
+
+.chase span:nth-child(3) {
+  animation-delay: 0.34s;
+}
+
+@keyframes hh-chase {
+  0%,
+  68%,
+  100% {
+    opacity: 0.28;
+  }
+  34% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chase span {
+    opacity: 0.85;
+  }
+}
+
+.hint,
+.error {
+  margin: 0;
+  font-family: var(--hh-font-body);
+  font-style: italic;
+  font-size: 16px;
+  line-height: 1.45;
+  text-align: center;
+}
+
+.hint {
+  color: var(--hh-ink-muted);
+}
+
+.error {
+  color: var(--hh-oxblood-bright);
+}
+
+/* --- Cast / sealed --- */
+.castHead {
+  padding: 30px 22px 28px;
+  text-align: center;
+}
+
+.kicker {
+  font-family: var(--hh-font-caps);
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  color: var(--hh-gold);
+}
+
+.castTitle {
+  margin: 14px 0 0;
+  font-family: var(--hh-font-display);
+  font-weight: 400;
+  font-size: 27px;
+  line-height: 1.2;
+  color: var(--hh-ink-display);
+}
+
+.castBody {
+  margin: 12px 0 0;
+  font-family: var(--hh-font-body);
+  font-style: italic;
+  font-size: 18px;
+  line-height: 1.5;
+  color: var(--hh-ink);
+  text-wrap: balance;
+}
+
+.castList {
+  margin: 10px 0 0;
+}
+
+.castRow {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--hh-gold-rule);
+}
+
+.castRow:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.castCategory {
+  font-family: var(--hh-font-caps);
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  color: var(--hh-gold);
+}
+
+.castNominee {
+  margin: 4px 0 0;
+  font-family: var(--hh-font-body);
+  font-size: 20px;
+  line-height: 1.3;
+  color: var(--hh-ink-display);
+  overflow-wrap: anywhere;
+}
+
+.castCostume {
+  font-style: italic;
+  color: var(--hh-ink-muted);
+}
+
+.castSkipped {
+  font-style: italic;
+  color: var(--hh-gold-dim);
+}
+
+@media (max-width: 520px) {
+  .block {
+    padding: 20px 16px 22px;
+  }
+
+  .actions {
+    padding: 20px 16px;
+  }
+}

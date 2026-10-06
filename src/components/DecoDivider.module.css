@@ -1,0 +1,39 @@
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.rule {
+  flex: 1;
+  height: 1px;
+}
+
+.ruleLeft {
+  background: linear-gradient(90deg, transparent, var(--hh-keyline));
+}
+
+.ruleRight {
+  background: linear-gradient(90deg, var(--hh-keyline), transparent);
+}
+
+.filled {
+  width: 6px;
+  height: 6px;
+  background: var(--hh-gold);
+  transform: rotate(45deg);
+}
+
+.outlined {
+  width: 9px;
+  height: 9px;
+  border: 1px solid var(--hh-gold);
+  transform: rotate(45deg);
+}
+
+.outlinedLone {
+  width: 7px;
+  height: 7px;
+  border: 1px solid var(--hh-gold);
+  transform: rotate(45deg);
+}

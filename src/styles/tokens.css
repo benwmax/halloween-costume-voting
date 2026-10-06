@@ -1,0 +1,68 @@
+/*
+ * Haunted Hollywood — design tokens.
+ * Red-carpet glamour first, horror second; the dread is in the details.
+ * Radius is 0 everywhere. No shadow system except the envelope and the two paper lifts.
+ */
+:root {
+  /* Paper & kraft */
+  --hh-paper: #e3d7bd;
+  --hh-paper-light: #f0e4c6;
+  --hh-seal-text: #f0e0c8;
+
+  --hh-kraft-body: #cdbb8c;
+  --hh-kraft-back: #c3b07f;
+  --hh-kraft-pocket-top: #d7c795;
+  --hh-kraft-pocket-bottom: #c9b578;
+  --hh-kraft-flap-top: #c8b483;
+  --hh-kraft-flap-bottom: #bda772;
+  --hh-kraft-border: #ab9560;
+  --hh-kraft-rule: rgba(90, 66, 32, 0.25);
+  --hh-kraft-seam: rgba(90, 66, 32, 0.05);
+
+  /* Ink ramp */
+  --hh-ink-display: #1c1512;
+  --hh-ink: #2a2118;
+  --hh-ink-soft: #3a2f22;
+  --hh-ink-muted: #5a4c33;
+  /* Footer disclaimer on the dark stage. Lifted from #6b5a3a, which sat at
+     2.97:1 against the page and failed WCAG AA; this holds 5.1:1 even over the
+     brightest part of the footlight glow. */
+  --hh-ink-faint: #9a8358;
+
+  /* Rules & metal */
+  --hh-keyline: #4a3a26;
+  --hh-gold: #7a5a1e;
+  --hh-gold-rule: #b9a679;
+  --hh-gold-knob: #8b7a54;
+  --hh-gold-dim: #7a6a45;
+
+  /* Oxblood */
+  --hh-oxblood: #5a1418;
+  --hh-oxblood-deep: #3d0c0f;
+  --hh-oxblood-bright: #8b1e2f;
+  --hh-blood: #4e0c0e;
+  --hh-charcoal: #3a2f22;
+
+  /* Stage */
+  --hh-stage: radial-gradient(ellipse at 50% 8%, #241b16 0%, #0d0906 62%);
+  --hh-stage-flat: #0d0906;
+
+  /* Type */
+  --hh-font-display: 'Rye', serif;
+  --hh-font-body: 'EB Garamond', serif;
+  --hh-font-caps: 'Cinzel', serif;
+  --hh-font-condensed: 'Oswald', sans-serif;
+  --hh-font-script: 'Parisienne', cursive;
+
+  /* Motion */
+  --hh-ease-flap: cubic-bezier(0.4, 0, 0.2, 1);
+  --hh-ease-reveal: cubic-bezier(0.16, 1, 0.3, 1);
+  /* The draw covers ~1500px, so the house reveal curve (near-expo) puts almost
+     all of it in the first 300ms and the slide is over before you can read it.
+     This one ramps up and settles long, keeping the card legible in motion. */
+  --hh-ease-draw: cubic-bezier(0.4, 0.02, 0.2, 1);
+
+  /* Geometry */
+  --hh-column: 600px;
+  --hh-scallop: 26px;
+}

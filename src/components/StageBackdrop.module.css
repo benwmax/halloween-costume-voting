@@ -1,0 +1,134 @@
+/*
+ * The room the invitation is sitting in: a dimmed movie palace.
+ * Every layer is drawn, fixed to the viewport so the atmosphere holds while the
+ * page scrolls, and kept at very low alpha — the backdrop must never compete
+ * with the paper. Warm light above, oxblood velvet at the edges, footlights
+ * below, grain over everything.
+ */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* Premiere searchlights fanning up out of frame. */
+.rays {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 240vw;
+  height: 105vh;
+  height: 105dvh;
+  transform: translateX(-50%);
+  background: repeating-conic-gradient(
+    from 206deg at 50% 0%,
+    rgba(255, 238, 202, 0.013) 0deg 3deg,
+    transparent 3deg 17deg
+  );
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), transparent 42%);
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), transparent 42%);
+}
+
+/* The house light overhead — the warm pool the ticket rests under. */
+.houseLight {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 62% 42% at 50% -6%, rgba(255, 240, 206, 0.075), transparent 68%);
+}
+
+/*
+ * Velvet drapes down both margins. They only appear once the viewport is wide
+ * enough to have margin to spare — on a phone the paper fills the width and
+ * there is no room for a proscenium.
+ */
+.curtain {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: clamp(96px, 15vw, 250px);
+  background-image:
+    /* fold shadows and the odd catch of light along a pleat */
+    repeating-linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.5) 0 3px,
+      transparent 3px 9px,
+      rgba(255, 226, 190, 0.016) 9px 11px,
+      transparent 11px 26px
+    ),
+    linear-gradient(90deg, #250a0d 0%, #190608 48%, rgba(12, 6, 5, 0) 100%);
+}
+
+.curtainLeft {
+  left: 0;
+}
+
+.curtainRight {
+  right: 0;
+  transform: scaleX(-1);
+}
+
+/* Footlights washing up off the stage floor. */
+.footlights {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 34vh;
+  height: 34dvh;
+  background: linear-gradient(to top, rgba(122, 86, 40, 0.11), rgba(90, 20, 24, 0.05) 38%, transparent 82%);
+}
+
+/* Film grain. */
+.grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.55;
+  background-image: radial-gradient(rgba(255, 246, 224, 0.055) 0.5px, transparent 0.6px),
+    radial-gradient(rgba(0, 0, 0, 0.4) 0.5px, transparent 0.6px);
+  background-size: 3px 3px, 5px 5px;
+  background-position: 0 0, 2px 3px;
+}
+
+/* Dust turning over in the beam. */
+@keyframes hh-mote {
+  0% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0;
+  }
+  14%,
+  86% {
+    opacity: var(--mote-peak);
+  }
+  100% {
+    transform: translate3d(var(--mote-dx), var(--mote-dy), 0);
+    opacity: 0;
+  }
+}
+
+.mote {
+  position: absolute;
+  width: var(--mote-size);
+  height: var(--mote-size);
+  border-radius: 50%;
+  background: rgba(255, 242, 214, 0.85);
+  opacity: 0;
+  animation: hh-mote var(--mote-duration) linear var(--mote-delay) infinite;
+}
+
+/*
+ * With reduced motion the global reset freezes the drift, which would leave
+ * every mote stuck at opacity 0. Hold them still and visible instead.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .mote {
+    opacity: var(--mote-peak);
+  }
+}
+
+@media (max-width: 760px) {
+  .curtain {
+    display: none;
+  }
+}

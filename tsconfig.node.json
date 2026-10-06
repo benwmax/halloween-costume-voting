@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "ES2023",
+    "lib": ["ES2023"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "strict": true,
+    // Explicit: vite.config.ts uses process.env. Without this it only compiled
+    // because a transitive dep happened to ship an ambient process declaration.
+    "types": ["node"]
+  },
+  "include": ["vite.config.ts"]
+}

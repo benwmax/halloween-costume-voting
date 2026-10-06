@@ -1,0 +1,111 @@
+/*
+ * Aged-paper stock with a die-cut scalloped edge.
+ * The silhouette is a mask composited from three radial gradients: a solid fill
+ * inset by one scallop top and bottom, plus two repeating semicircle rows.
+ */
+.card {
+  position: relative;
+  /*
+   * Lets type and ornament size against the card's own width rather than the
+   * viewport. The previous viewport breakpoints drifted out of step with the
+   * padding steps and opened a band at 521-539px where the marquee clipped.
+   */
+  container-type: inline-size;
+  width: var(--hh-column);
+  max-width: 100%;
+  background: var(--hh-paper);
+  -webkit-mask-image: radial-gradient(#000, #000),
+    radial-gradient(circle 13px at 13px 0, transparent 12.6px, #000 13.1px),
+    radial-gradient(circle 13px at 13px 26px, transparent 12.6px, #000 13.1px);
+  -webkit-mask-size: 100% calc(100% - 52px), 26px 26px, 26px 26px;
+  -webkit-mask-position: 0 26px, 0 0, 0 100%;
+  -webkit-mask-repeat: no-repeat, repeat-x, repeat-x;
+  mask-image: radial-gradient(#000, #000),
+    radial-gradient(circle 13px at 13px 0, transparent 12.6px, #000 13.1px),
+    radial-gradient(circle 13px at 13px 26px, transparent 12.6px, #000 13.1px);
+  mask-size: 100% calc(100% - 52px), 26px 26px, 26px 26px;
+  mask-position: 0 26px, 0 0, 0 100%;
+  mask-repeat: no-repeat, repeat-x, repeat-x;
+}
+
+.ticket {
+  padding: 46px 34px;
+}
+
+.stub {
+  padding: 40px 34px;
+}
+
+/* --- Texture layers. All full-bleed, all behind the keyline box, never over type. --- */
+.texture {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* 1. warm lighting */
+.lighting {
+  background: radial-gradient(ellipse at 30% 12%, rgba(255, 252, 240, 0.55), transparent 52%),
+    radial-gradient(ellipse at 88% 92%, rgba(122, 86, 40, 0.24), transparent 52%);
+}
+
+.lightingSoft {
+  background: radial-gradient(ellipse at 30% 12%, rgba(255, 252, 240, 0.5), transparent 55%),
+    radial-gradient(ellipse at 88% 92%, rgba(122, 86, 40, 0.2), transparent 55%);
+}
+
+/* 2. crossed fibers */
+.fibers {
+  background-image: repeating-linear-gradient(96deg, rgba(120, 88, 44, 0.055) 0 1px, transparent 1px 4px),
+    repeating-linear-gradient(4deg, rgba(120, 88, 44, 0.045) 0 1px, transparent 1px 6px),
+    repeating-linear-gradient(58deg, rgba(255, 250, 236, 0.06) 0 1px, transparent 1px 5px);
+}
+
+/* 3. speckle */
+.speckle {
+  opacity: 0.5;
+  background-image: radial-gradient(rgba(94, 66, 30, 0.22) 0.7px, transparent 0.8px),
+    radial-gradient(rgba(94, 66, 30, 0.16) 0.6px, transparent 0.7px),
+    radial-gradient(rgba(255, 250, 236, 0.3) 0.6px, transparent 0.7px);
+  background-size: 17px 19px, 29px 23px, 23px 31px;
+  background-position: 0 0, 7px 11px, 13px 5px;
+}
+
+.speckleSoft {
+  opacity: 0.5;
+  background-image: radial-gradient(rgba(94, 66, 30, 0.22) 0.7px, transparent 0.8px),
+    radial-gradient(rgba(255, 250, 236, 0.3) 0.6px, transparent 0.7px);
+  background-size: 17px 19px, 23px 31px;
+  background-position: 0 0, 13px 5px;
+}
+
+/* 4. age blotches */
+.blotches {
+  background: radial-gradient(ellipse 180px 130px at 12% 68%, rgba(122, 86, 40, 0.14), transparent 70%),
+    radial-gradient(ellipse 220px 150px at 92% 34%, rgba(122, 86, 40, 0.12), transparent 70%),
+    radial-gradient(ellipse 150px 120px at 62% 96%, rgba(122, 86, 40, 0.13), transparent 70%);
+}
+
+/* --- The printed keyline grid --- */
+.keyline {
+  position: relative;
+  border: 1px solid var(--hh-keyline);
+}
+
+.cell {
+  border-bottom: 1px solid var(--hh-keyline);
+}
+
+.cellLast {
+  border-bottom: none;
+}
+
+@media (max-width: 520px) {
+  .ticket {
+    padding: 40px 20px;
+  }
+
+  .stub {
+    padding: 34px 20px;
+  }
+}
