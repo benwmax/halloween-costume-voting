@@ -1,3 +1,4 @@
+import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
@@ -11,5 +12,14 @@ export const SITE_BASE = '/halloween-costume-voting/'
 export default defineConfig(({ command }) => ({
   base: command === 'build' ? SITE_BASE : '/',
   plugins: [react()],
+  build: {
+    rollupOptions: {
+      // The guest ballot, and the host's awards show at awards.html.
+      input: {
+        ballot: fileURLToPath(new URL('./index.html', import.meta.url)),
+        awards: fileURLToPath(new URL('./awards.html', import.meta.url)),
+      },
+    },
+  },
   server: { port },
 }))

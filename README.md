@@ -64,7 +64,7 @@ npm run qr -- https://example.com/other-url
 
 ```bash
 npm install
-npm run dev            # ballot at localhost; with no endpoint set, uses sample nominees and records nothing
+npm run dev            # ballot at /, awards show at /awards.html; with no endpoint set, both use sample data and nothing is recorded
 npm run test:endpoint  # exercises Code.gs against fake Apps Script services
 npm run build
 ```
@@ -75,8 +75,33 @@ To try it against the real sheet locally, copy `.env.example` to `.env.local` an
 **Adding a category:** add it to `CATEGORIES` in **both** `apps-script/Code.gs` and
 `src/lib/categories.ts`, then redeploy the script as a new version.
 
-## Phase 2: awards presentation
+## The awards show
 
-`doGet?action=results&key=<Host key>` already returns ranked results per category, with ties
-sharing a rank and the most common costume description for each nominee. The awards screen will be
-a host-only page built on that endpoint.
+**https://benwmax.github.io/halloween-costume-voting/awards.html** is a host-only presentation for the
+TV. Guests can't reach it without the **Host key** from the `Settings` tab.
+
+**Before the party:** open the page on the phone, tablet or Mac you'll present from, and enter the
+host key once; that device remembers it. Or open `awards.html?key=<Host key>`, and the page saves the
+key and removes it from the address bar.
+
+**At announcement time:**
+1. Untick **Voting open** in `Settings`, and fix any split spellings in `Merges`.
+2. Open the awards page. The backstage screen shows how many ballots and votes there are, flags ties
+   and warns if voting is still open. It never shows names, so it's safe if the TV is already
+   mirroring. Tap **Refresh results** after any sheet changes.
+3. Start screen mirroring (AirPlay or Chromecast), then **Start the show**. On a Mac or iPad it goes
+   full screen.
+
+**Running order:** an opening title, then for each award the nominees (top five, alphabetical so the
+order gives nothing away), a sealed envelope, and the opened envelope with the winner's card rising
+out. Co-winners fan out side by side. It ends with a curtain call of every winner. Vote counts
+never appear on screen.
+
+**Controls:** tap or click anywhere on the right side, or press → / Space / Enter, to go forward; tap
+the left edge or press ← to go back. **F** toggles full screen, and **Esc** returns to backstage
+(press it twice when in full screen). If the page reloads mid-show, backstage offers to resume
+where you were. While the show runs, the device's screen is kept from going to sleep where the
+browser allows it.
+
+**Rehearsing:** with no `.env.local`, `npm run dev` and open `/awards.html` run the show on sample
+results, including a tie.

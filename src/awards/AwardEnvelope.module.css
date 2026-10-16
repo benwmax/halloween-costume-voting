@@ -1,0 +1,247 @@
+/*
+ * The envelope is drawn in three z-layers so the card can sit inside it: the
+ * back (z1), the winner cards (z2), then the front pocket, flap and seal (z3).
+ * The pocket covers everything but the top-centre throat, so the card is only
+ * ever seen through the opening, as with a real envelope.
+ */
+.stage {
+  --w: min(50vw, 86vh);
+  position: relative;
+  width: var(--w);
+  aspect-ratio: 600 / 348;
+  perspective: 1400px;
+}
+
+.envelope,
+.envelopeFront {
+  position: absolute;
+  inset: 0;
+  transition: transform 900ms var(--hh-ease-reveal) 1500ms, opacity 700ms ease 1600ms;
+}
+
+.envelope {
+  z-index: 1;
+  filter: drop-shadow(0 30px 50px rgba(12, 7, 3, 0.6));
+}
+
+.envelopeFront {
+  z-index: 3;
+}
+
+.opened .envelope,
+.opened .envelopeFront {
+  transform: translateY(85%);
+  opacity: 0;
+}
+
+@keyframes hh-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-1.2%);
+  }
+}
+
+.sealed {
+  animation: hh-bob 3.4s ease-in-out infinite;
+}
+
+.kraft {
+  position: absolute;
+  inset: 0;
+  background: var(--hh-kraft-body);
+  border: 1px solid var(--hh-kraft-border);
+}
+
+.fibers {
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(96deg, rgba(90, 66, 32, 0.06) 0 1px, transparent 1px 4px),
+    repeating-linear-gradient(6deg, rgba(90, 66, 32, 0.05) 0 1px, transparent 1px 6px);
+}
+
+/* The inside of the envelope, seen through the throat once the flap lifts. */
+.back {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(#8f7c4f, var(--hh-kraft-back) 60%);
+}
+
+.pocket {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(var(--hh-kraft-pocket-top), var(--hh-kraft-pocket-bottom));
+  clip-path: polygon(0 0, 50% 54%, 100% 0, 100% 100%, 0 100%);
+  border: 1px solid var(--hh-kraft-border);
+}
+
+.seam {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 52%;
+  background: var(--hh-kraft-seam);
+}
+
+.seamLeft {
+  left: 0;
+  clip-path: polygon(0 0, 100% 54%, 0 100%);
+}
+
+.seamRight {
+  right: 0;
+  clip-path: polygon(100% 0, 0 54%, 100% 100%);
+}
+
+.flap {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 92%;
+  background: linear-gradient(var(--hh-kraft-flap-top), var(--hh-kraft-flap-bottom));
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform-origin: top center;
+  transition: transform 820ms var(--hh-ease-flap) 150ms;
+  backface-visibility: hidden;
+}
+
+.opened .flap {
+  transform: rotateX(-172deg);
+}
+
+.seal {
+  position: absolute;
+  top: 46%;
+  left: 50%;
+  width: 13%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 34%, #a3283a, #8b1e2f 55%, #5a1418);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--hh-font-display);
+  font-size: calc(var(--w) * 0.04);
+  color: var(--hh-seal-text);
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.25), 0 2px 6px rgba(0, 0, 0, 0.45);
+  transition: opacity 300ms ease, transform 420ms var(--hh-ease-reveal);
+}
+
+.opened .seal {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.8);
+}
+
+/* --- The winner cards --- */
+.cards {
+  position: absolute;
+  z-index: 2;
+  left: 7%;
+  right: 7%;
+  top: 10%;
+  bottom: 6%;
+  display: flex;
+  justify-content: center;
+  visibility: hidden;
+}
+
+.opened .cards {
+  visibility: visible;
+  animation: hh-rise 2700ms var(--hh-ease-draw) 650ms both;
+}
+
+/* Out of the envelope, hold a beat, then forward to the centre of the screen. */
+@keyframes hh-rise {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+  42% {
+    transform: translateY(-88%) scale(1);
+  }
+  58% {
+    transform: translateY(-88%) scale(1);
+  }
+  100% {
+    transform: translateY(-22%) scale(1.32);
+  }
+}
+
+.card {
+  container-type: inline-size;
+  position: relative;
+  flex: none;
+  width: 100%;
+  height: 100%;
+  padding: 3.2cqi;
+  background: var(--hh-paper);
+  background-image: radial-gradient(ellipse at 30% 12%, rgba(255, 252, 240, 0.55), transparent 55%),
+    radial-gradient(ellipse at 88% 92%, rgba(122, 86, 40, 0.22), transparent 55%);
+  box-shadow: 0 18px 40px rgba(12, 7, 3, 0.55);
+}
+
+/* Co-winners fan out like a hand of cards. */
+.cardsTie .card {
+  width: calc(100% / var(--count) + 12%);
+  margin: 0 -4%;
+  transform: rotate(calc(var(--i) * 5deg)) translateY(calc(var(--i) * var(--i) * 4%));
+}
+
+.cardKeyline {
+  height: 100%;
+  border: 1px solid var(--hh-keyline);
+  outline: 1px solid var(--hh-gold-rule);
+  outline-offset: -1.6cqi;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2.4cqi;
+  padding: 4cqi;
+  text-align: center;
+}
+
+.cardKicker {
+  font-family: var(--hh-font-caps);
+  font-weight: 600;
+  font-size: 3.6cqi;
+  letter-spacing: 0.28em;
+  color: var(--hh-gold);
+}
+
+.cardName {
+  font-family: var(--hh-font-display);
+  font-size: 13cqi;
+  line-height: 1.08;
+  color: var(--hh-ink-display);
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+
+.cardsTie .cardName {
+  font-size: 14cqi;
+}
+
+.cardCostume {
+  font-family: var(--hh-font-body);
+  font-style: italic;
+  font-size: 6.4cqi;
+  line-height: 1.25;
+  color: var(--hh-ink-soft);
+  text-wrap: balance;
+}
+
+.cardsTie .cardCostume {
+  font-size: 8cqi;
+}
+
+/* Reduced motion: no flight, just the result. */
+@media (prefers-reduced-motion: reduce) {
+  .opened .cards {
+    animation: none;
+    transform: translateY(-22%) scale(1.32);
+  }
+}
