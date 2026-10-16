@@ -61,7 +61,7 @@ export default function App() {
       const nominee = saved.draft[c.id].nominee.trim()
       const costume = saved.draft[c.id].costume.trim()
       if (nominee) votes.push({ category: c.id, nominee, costume })
-      else if (costume) found[c.id] = 'Who wore it? Add a name, or clear the costume to skip.'
+      else if (costume) found[c.id] = 'Who wore it? Add a name, or leave this category blank.'
       else if (saved.cast?.[c.id]) withdraw.push(c.id)
     }
     if (votes.length === 0 && withdraw.length === 0 && !found.voter) {

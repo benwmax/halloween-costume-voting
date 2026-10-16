@@ -13,7 +13,7 @@ export default function Marquee() {
         <h1 className={styles.awards}>The Costume Awards</h1>
         <DecoDivider />
         <p className={styles.lede}>
-          Cast your ballot for tonight&apos;s finest. Skip any category you like.
+          Cast your ballot for tonight&apos;s finest. Every category is optional — leave any blank.
         </p>
       </div>
     </PaperCard>

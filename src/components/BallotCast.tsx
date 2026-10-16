@@ -50,7 +50,7 @@ export default function BallotCast({ voter, cast, sealed, onChange }: Props) {
                         {entry.costume && <span className={styles.castCostume}> as {entry.costume}</span>}
                       </>
                     ) : (
-                      <span className={styles.castSkipped}>Skipped</span>
+                      <span className={styles.castSkipped}>No vote</span>
                     )}
                   </dd>
                 </div>

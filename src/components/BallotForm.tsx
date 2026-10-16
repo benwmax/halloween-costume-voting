@@ -89,7 +89,6 @@ export default function BallotForm({
           const entry = draft[category.id]
           const id = `${baseId}-${category.id}`
           const error = errors[category.id]
-          const filled = entry.nominee !== '' || entry.costume !== ''
           const update = (patch: Partial<typeof entry>) =>
             onDraftChange({ ...draft, [category.id]: { ...entry, ...patch } })
 
@@ -141,15 +140,6 @@ export default function BallotForm({
                 <p id={`${id}-error`} className={styles.fieldError}>
                   {error}
                 </p>
-              )}
-              {filled && (
-                <button
-                  type="button"
-                  className={styles.skip}
-                  onClick={() => update({ nominee: '', costume: '' })}
-                >
-                  Clear — skip this category
-                </button>
               )}
             </fieldset>
           )

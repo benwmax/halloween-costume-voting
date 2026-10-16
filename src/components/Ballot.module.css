@@ -125,21 +125,6 @@
   color: var(--hh-oxblood-bright);
 }
 
-.skip {
-  display: block;
-  margin: 14px auto 0;
-  min-height: 36px;
-  padding: 6px 10px;
-  background: none;
-  border: 0;
-  font-family: var(--hh-font-body);
-  font-size: 15px;
-  color: var(--hh-ink-muted);
-  text-decoration: underline;
-  text-decoration-color: var(--hh-gold-rule);
-  text-underline-offset: 3px;
-  cursor: pointer;
-}
 
 /* --- Autocomplete --- */
 .combo {

@@ -19,7 +19,7 @@ Guests scan a QR code at the party and vote for **Best Dressed**, **Best Couples
   copied to a cookie. Every vote is keyed on (device, category), so voting again from the same phone
   replaces the earlier vote. A vote under a voter name that has already voted in that category also
   replaces the old one. That catches someone re-voting from a private tab under the same name.
-- Guests can change or clear their votes until you close voting. Clearing a category withdraws that
+- Every category is optional: a guest just leaves it blank. They can change their votes until you close voting, and emptying a category they voted in earlier withdraws that
   vote.
 - Guests never see counts. The autocomplete list is alphabetical and carries no tallies.
 
