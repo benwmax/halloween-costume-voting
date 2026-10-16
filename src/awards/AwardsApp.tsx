@@ -201,14 +201,16 @@ function Show({
       onClick={(event) => (event.clientX < window.innerWidth * 0.2 ? prev() : next())}
     >
       <StageBackdrop />
-      <div className={styles.spotlight} aria-hidden="true" />
-      <div key={slideKey(slide, index)} className={styles.slide} aria-live="polite">
-        <SlideView slide={slide} />
-      </div>
-      <div className={styles.progress} aria-hidden="true">
-        {slides.map((_, i) => (
-          <span key={i} className={i <= index ? styles.progressOn : undefined} />
-        ))}
+      <div className={styles.frame}>
+        <div className={styles.spotlight} aria-hidden="true" />
+        <div key={slideKey(slide, index)} className={styles.slide} aria-live="polite">
+          <SlideView slide={slide} />
+        </div>
+        <div className={styles.progress} aria-hidden="true">
+          {slides.map((_, i) => (
+            <span key={i} className={i <= index ? styles.progressOn : undefined} />
+          ))}
+        </div>
       </div>
     </main>
   )

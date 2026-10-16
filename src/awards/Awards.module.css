@@ -1,7 +1,7 @@
 /*
- * The awards are cast to a TV, so everything is sized to the viewport (vw/vh
- * via min()) rather than in pixels: the same slide reads on a 13" laptop, a
- * phone mirrored in landscape and a 65" set across the room.
+ * The awards are cast to a TV. Show slides are sized in cqw/cqh against a
+ * letterboxed 16:9 frame (see .frame) rather than in pixels, so the same slide
+ * reads on a 13" laptop, a mirrored phone and a 65" set across the room.
  */
 
 /* ===================== Backstage (the host's control screen) ===================== */
@@ -237,6 +237,24 @@
   -webkit-user-select: none;
   -webkit-tap-highlight-color: transparent;
   color: var(--hh-paper-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/*
+ * Every slide is laid out on a fixed 16:9 stage that scales to the largest size
+ * the screen can hold, letterboxed like a TV. Sizes inside it are in cqw/cqh
+ * (percent of the stage), so a slide looks identical on a TV, a laptop or a
+ * phone in either orientation, and nothing can ever spill off the edge.
+ */
+.frame {
+  position: relative;
+  container-type: size;
+  width: min(100vw, 100vh * 16 / 9);
+  height: min(100vh, 100vw * 9 / 16);
+  width: min(100dvw, 100dvh * 16 / 9);
+  height: min(100dvh, 100dvw * 9 / 16);
 }
 
 /* A follow-spot from above, breathing slowly. */
@@ -266,14 +284,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 6vh 6vw 8vh;
+  padding: 6cqh 6cqw 8cqh;
   animation: hh-slide-in 700ms var(--hh-ease-reveal) both;
 }
 
 @keyframes hh-slide-in {
   from {
     opacity: 0;
-    transform: translateY(2.5vh);
+    transform: translateY(2.5cqh);
   }
   to {
     opacity: 1;
@@ -292,54 +310,56 @@
 .kicker {
   font-family: var(--hh-font-caps);
   font-weight: 600;
-  font-size: min(1.7vw, 3vh);
+  font-size: min(1.7cqw, 3cqh);
   letter-spacing: 0.32em;
   color: var(--hh-gold-rule);
 }
 
 .presents {
-  margin-top: 2.4vh;
+  margin-top: 2.4cqh;
   font-family: var(--hh-font-body);
   font-style: italic;
-  font-size: min(2.4vw, 4.2vh);
+  font-size: min(2.4cqw, 4.2cqh);
   color: var(--hh-paper);
 }
 
 .marquee {
-  margin: 1.2vh 0 3vh;
+  margin: 1.2cqh 0 5.5cqh;
   font-family: var(--hh-font-display);
   font-weight: 400;
-  font-size: min(8.4vw, 15vh);
-  line-height: 1;
+  font-size: min(8.4cqw, 15cqh);
+  line-height: 1.1;
   color: var(--hh-paper-light);
-  text-shadow: 0 0 4vh rgba(255, 220, 160, 0.25);
+  text-shadow: 0 0 4cqh rgba(255, 220, 160, 0.25);
 }
 
 .marqueeSmall {
   composes: marquee;
-  font-size: min(6vw, 11vh);
-  margin-bottom: 2.4vh;
+  font-size: min(6cqw, 11cqh);
+  /* Rye's descenders hang well below the line box; leave them room. */
+  margin-bottom: 6cqh;
 }
 
 /* The deco divider is drawn in keyline brown for paper; lift it for the dark stage. */
 .dividerWide {
-  width: min(52vw, 90vh);
+  width: min(52cqw, 90cqh);
+  margin-bottom: 4cqh;
   filter: brightness(1.9);
 }
 
 .subline {
-  margin: 3.4vh 0 0;
+  margin: 3.4cqh 0 0;
   font-family: var(--hh-font-body);
   font-style: italic;
-  font-size: min(2.6vw, 4.4vh);
+  font-size: min(2.6cqw, 4.4cqh);
   color: var(--hh-paper);
 }
 
 .categoryTitle {
-  margin: 1.6vh 0 5vh;
+  margin: 1.6cqh 0 5cqh;
   font-family: var(--hh-font-display);
   font-weight: 400;
-  font-size: min(6.4vw, 11.5vh);
+  font-size: min(6.4cqw, 11.5cqh);
   line-height: 1.05;
   color: var(--hh-paper-light);
   text-wrap: balance;
@@ -353,29 +373,29 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 2.2vh 1.6vw;
-  max-width: 88vw;
+  gap: 2.2cqh 1.6cqw;
+  max-width: 88cqw;
 }
 
 .nominee {
   container-type: inline-size;
-  width: min(calc(84vw / var(--cols) - 1.6vw), 46vh);
+  width: min(calc(84cqw / var(--cols) - 1.6cqw), 46cqh);
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 0.8vh;
-  padding: 2.4vh 1.4vw;
+  gap: 0.8cqh;
+  padding: 2.4cqh 1.4cqw;
   background: var(--hh-paper);
   outline: 1px solid var(--hh-keyline);
-  outline-offset: -0.8vh;
-  box-shadow: 0 1.4vh 3vh rgba(12, 7, 3, 0.5);
+  outline-offset: -0.8cqh;
+  box-shadow: 0 1.4cqh 3cqh rgba(12, 7, 3, 0.5);
   animation: hh-deal 650ms var(--hh-ease-reveal) var(--d) both;
 }
 
 @keyframes hh-deal {
   from {
     opacity: 0;
-    transform: translateY(4vh) rotate(-2deg);
+    transform: translateY(4cqh) rotate(-2deg);
   }
   to {
     opacity: 1;
@@ -385,7 +405,7 @@
 
 .nomineeName {
   font-family: var(--hh-font-display);
-  font-size: min(10cqi, 4.4vh);
+  font-size: min(10cqi, 4.4cqh);
   line-height: 1.1;
   color: var(--hh-ink-display);
   overflow-wrap: anywhere;
@@ -394,7 +414,7 @@
 .nomineeCostume {
   font-family: var(--hh-font-body);
   font-style: italic;
-  font-size: min(8cqi, 3.2vh);
+  font-size: min(8cqi, 3.2cqh);
   line-height: 1.2;
   color: var(--hh-ink-soft);
 }
@@ -404,7 +424,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4vh;
+  gap: 4cqh;
 }
 
 .envelopeHead {
@@ -417,10 +437,10 @@
 }
 
 .categoryTitleSmall {
-  margin: 1.2vh 0 0.6vh;
+  margin: 1.2cqh 0 0.6cqh;
   font-family: var(--hh-font-display);
   font-weight: 400;
-  font-size: min(4.6vw, 8.2vh);
+  font-size: min(4.6cqw, 8.2cqh);
   line-height: 1.05;
   color: var(--hh-paper-light);
 }
@@ -428,20 +448,20 @@
 .goesTo {
   font-family: var(--hh-font-body);
   font-style: italic;
-  font-size: min(2.8vw, 4.8vh);
+  font-size: min(2.8cqw, 4.8cqh);
   color: var(--hh-paper);
 }
 
 /* Once the card is out, the award's name settles in above it. */
 .winnerCaption {
   position: absolute;
-  top: 4.5vh;
+  top: 4.5cqh;
   left: 0;
   right: 0;
   text-align: center;
   font-family: var(--hh-font-caps);
   font-weight: 600;
-  font-size: min(2.2vw, 4vh);
+  font-size: min(2.2cqw, 4cqh);
   letter-spacing: 0.26em;
   text-transform: uppercase;
   color: var(--hh-gold-rule);
@@ -460,7 +480,7 @@
 @keyframes hh-caption {
   from {
     opacity: 0;
-    transform: translateY(-1.5vh);
+    transform: translateY(-1.5cqh);
   }
   to {
     opacity: 1;
@@ -473,39 +493,39 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 2vw;
-  max-width: 90vw;
+  gap: 2cqw;
+  max-width: 90cqw;
 }
 
 .finaleCard {
   container-type: inline-size;
-  width: min(27vw, 50vh);
-  padding: 3vh 1.6vw;
+  width: min(27cqw, 50cqh);
+  padding: 3cqh 1.6cqw;
   background: var(--hh-paper);
   outline: 1px solid var(--hh-keyline);
-  outline-offset: -0.9vh;
-  box-shadow: 0 1.4vh 3vh rgba(12, 7, 3, 0.5);
+  outline-offset: -0.9cqh;
+  box-shadow: 0 1.4cqh 3cqh rgba(12, 7, 3, 0.5);
   animation: hh-deal 700ms var(--hh-ease-reveal) var(--d) both;
 }
 
 .finaleCategory {
   font-family: var(--hh-font-caps);
   font-weight: 600;
-  font-size: min(5.6cqi, 2.4vh);
+  font-size: min(5.6cqi, 2.4cqh);
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--hh-gold);
 }
 
 .finaleWinner {
-  margin-top: 1.4vh;
+  margin-top: 1.4cqh;
   display: flex;
   flex-direction: column;
 }
 
 .finaleName {
   font-family: var(--hh-font-display);
-  font-size: min(10cqi, 4.6vh);
+  font-size: min(10cqi, 4.6cqh);
   line-height: 1.1;
   color: var(--hh-ink-display);
 }
@@ -513,7 +533,7 @@
 .finaleCostume {
   font-family: var(--hh-font-body);
   font-style: italic;
-  font-size: min(7.4cqi, 3vh);
+  font-size: min(7.4cqi, 3cqh);
   color: var(--hh-ink-soft);
 }
 
@@ -522,16 +542,16 @@
   position: absolute;
   z-index: 2;
   left: 50%;
-  bottom: 2.6vh;
+  bottom: 2.6cqh;
   transform: translateX(-50%);
   display: flex;
-  gap: 0.8vh;
+  gap: 0.8cqh;
   opacity: 0.45;
 }
 
 .progress span {
-  width: 0.7vh;
-  height: 0.7vh;
+  width: 0.7cqh;
+  height: 0.7cqh;
   transform: rotate(45deg);
   border: 1px solid var(--hh-gold-rule);
 }
@@ -547,24 +567,4 @@
   overflow: hidden;
   clip-path: inset(50%);
   white-space: nowrap;
-}
-
-/* A phone held upright: stack everything and let it breathe vertically. */
-@media (orientation: portrait) {
-  .kicker {
-    font-size: 3vw;
-  }
-
-  .marquee {
-    font-size: 13vw;
-  }
-
-  .categoryTitle {
-    font-size: 10vw;
-  }
-
-  .nominee,
-  .finaleCard {
-    width: 80vw;
-  }
 }

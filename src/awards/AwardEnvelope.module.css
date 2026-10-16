@@ -5,7 +5,7 @@
  * ever seen through the opening, as with a real envelope.
  */
 .stage {
-  --w: min(50vw, 86vh);
+  --w: min(50cqw, 86cqh);
   position: relative;
   width: var(--w);
   aspect-ratio: 600 / 348;
