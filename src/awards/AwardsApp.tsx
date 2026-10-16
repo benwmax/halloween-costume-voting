@@ -1,15 +1,13 @@
-import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent } from 'react'
+import { useCallback, useEffect, useMemo, useState, type FormEvent } from 'react'
 import StageBackdrop from '../components/StageBackdrop'
 import DecoDivider from '../components/DecoDivider'
 import AwardEnvelope from './AwardEnvelope'
 import { buildSlides, type Slide } from './slides'
-import { ShowAudio } from './sound'
 import { DEMO, fetchResults, ResultsError, type Results } from '../lib/results'
 import styles from './Awards.module.css'
 
 const KEY_STORAGE = 'hh-awards-key'
 const POSITION_STORAGE = 'hh-awards-slide'
-const SOUND_STORAGE = 'hh-awards-sound'
 
 type Phase = 'backstage' | 'show'
 
@@ -20,9 +18,6 @@ export default function AwardsApp() {
   const [error, setError] = useState<string | null>(null)
   const [phase, setPhase] = useState<Phase>('backstage')
   const [index, setIndex] = useState(0)
-  const [sound, setSound] = useState(readSound)
-  const audio = useRef<ShowAudio | null>(null)
-  audio.current ??= new ShowAudio()
 
   const load = useCallback(async (key: string) => {
     setLoading(true)
@@ -44,38 +39,14 @@ export default function AwardsApp() {
   const slides = useMemo(() => (results ? buildSlides(results) : []), [results])
   const saved = readPosition()
 
-  const toggleSound = (on: boolean) => {
-    setSound(on)
-    writeSound(on)
-    audio.current!.setMuted(!on)
-  }
-
   const start = (from: number) => {
-    const to = Math.min(from, slides.length - 1)
-    // This click is what lets the browser play sound for the rest of the show.
-    audio.current!.unlock()
-    audio.current!.setMuted(!sound)
-    cue(audio.current!, slides, null, to)
-    setIndex(to)
+    setIndex(Math.min(from, slides.length - 1))
     setPhase('show')
     document.documentElement.requestFullscreen?.().catch(() => {})
   }
 
   if (phase === 'show' && results) {
-    return (
-      <Show
-        slides={slides}
-        index={index}
-        setIndex={setIndex}
-        audio={audio.current}
-        sound={sound}
-        onSoundChange={toggleSound}
-        onExit={() => {
-          audio.current!.stopAll()
-          setPhase('backstage')
-        }}
-      />
-    )
+    return <Show slides={slides} index={index} setIndex={setIndex} onExit={() => setPhase('backstage')} />
   }
 
   return (
@@ -155,33 +126,14 @@ export default function AwardsApp() {
                       {loading ? 'REFRESHING…' : 'REFRESH RESULTS'}
                     </button>
                   </div>
-
-                  <div className={styles.soundRow}>
-                    <label className={styles.soundToggle}>
-                      <input
-                        type="checkbox"
-                        checked={sound}
-                        onChange={(event) => toggleSound(event.target.checked)}
-                      />
-                      Drum rolls &amp; fanfares
-                    </label>
-                    <button
-                      type="button"
-                      className={styles.testSound}
-                      disabled={!sound}
-                      onClick={() => audio.current!.test()}
-                    >
-                      ♪ Test sound
-                    </button>
-                  </div>
                 </>
               )}
 
               <div className={styles.help}>
                 <p>
                   <strong>Running the show:</strong> tap or click the right of the screen, or press → or Space,
-                  to move on. Tap the left edge, or press ←, to go back. F toggles full screen; M mutes; Esc
-                  (twice in full screen) returns here.
+                  to move on. Tap the left edge, or press ←, to go back. F toggles full screen; Esc twice
+                  returns here.
                 </p>
                 <p>
                   Fixed a spelling in the Merges tab? Refresh the results before you start; the show reads
@@ -206,38 +158,16 @@ function Show({
   slides,
   index,
   setIndex,
-  audio,
-  sound,
-  onSoundChange,
   onExit,
 }: {
   slides: Slide[]
   index: number
-  setIndex: (index: number) => void
-  audio: ShowAudio
-  sound: boolean
-  onSoundChange: (on: boolean) => void
+  setIndex: (update: (i: number) => number) => void
   onExit: () => void
 }) {
   const last = slides.length - 1
-  const [toast, setToast] = useState<string | null>(null)
-
-  const go = useCallback(
-    (to: number) => {
-      if (to < 0 || to > last || to === index) return
-      cue(audio, slides, index, to)
-      setIndex(to)
-    },
-    [audio, slides, index, last, setIndex],
-  )
-  const next = useCallback(() => go(index + 1), [go, index])
-  const prev = useCallback(() => go(index - 1), [go, index])
-
-  useEffect(() => {
-    if (!toast) return
-    const timer = window.setTimeout(() => setToast(null), 1600)
-    return () => window.clearTimeout(timer)
-  }, [toast])
+  const next = useCallback(() => setIndex((i) => Math.min(i + 1, last)), [setIndex, last])
+  const prev = useCallback(() => setIndex((i) => Math.max(i - 1, 0)), [setIndex])
 
   useEffect(() => writePosition(index), [index])
 
@@ -252,9 +182,6 @@ function Show({
       } else if (event.key === 'f' || event.key === 'F') {
         if (document.fullscreenElement) document.exitFullscreen().catch(() => {})
         else document.documentElement.requestFullscreen?.().catch(() => {})
-      } else if (event.key === 'm' || event.key === 'M') {
-        onSoundChange(!sound)
-        setToast(sound ? 'Sound off' : 'Sound on')
       } else if (event.key === 'Escape' && !document.fullscreenElement) {
         // In full screen the browser takes the first Esc to leave it; the next one leaves the show.
         onExit()
@@ -262,7 +189,7 @@ function Show({
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [next, prev, onExit, onSoundChange, sound])
+  }, [next, prev, onExit])
 
   useWakeLock()
 
@@ -279,11 +206,6 @@ function Show({
         <div key={slideKey(slide, index)} className={styles.slide} aria-live="polite">
           <SlideView slide={slide} />
         </div>
-        {toast && (
-          <div className={styles.toast} role="status">
-            {toast}
-          </div>
-        )}
         <div className={styles.progress} aria-hidden="true">
           {slides.map((_, i) => (
             <span key={i} className={i <= index ? styles.progressOn : undefined} />
@@ -299,25 +221,6 @@ function columns(count: number) {
   if (count <= 3) return count
   if (count === 4) return 2
   return count <= 6 ? 3 : 4
-}
-
-/**
- * The sound for arriving at a slide. Stingers only play stepping forward (or
- * on starting the show), so backing up to fix a mis-tap never replays a
- * fanfare, while a sealed envelope always rolls, whichever way you reach it.
- */
-function cue(audio: ShowAudio, slides: Slide[], from: number | null, to: number) {
-  const slide = slides[to]
-  const forward = from === null || to === from + 1
-  if (slide.kind === 'envelope' && slide.opened) {
-    if (forward) audio.reveal()
-    else audio.stopRoll()
-    return
-  }
-  audio.stopRoll()
-  if (slide.kind === 'envelope') audio.startRoll()
-  else if (slide.kind === 'opening' && forward) audio.title()
-  else if (slide.kind === 'finale' && forward) audio.title(true)
 }
 
 /** Sealed and opened envelopes share a key so the opening animates in place. */
@@ -509,22 +412,6 @@ function writePosition(index: number) {
     sessionStorage.setItem(POSITION_STORAGE, String(index))
   } catch {
     // Storage blocked: a reload starts from the top.
-  }
-}
-
-function readSound(): boolean {
-  try {
-    return localStorage.getItem(SOUND_STORAGE) !== 'off'
-  } catch {
-    return true
-  }
-}
-
-function writeSound(on: boolean) {
-  try {
-    localStorage.setItem(SOUND_STORAGE, on ? 'on' : 'off')
-  } catch {
-    // Storage blocked: the choice lasts for this visit only.
   }
 }
 

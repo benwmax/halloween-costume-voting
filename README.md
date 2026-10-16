@@ -97,16 +97,8 @@ order gives nothing away), a sealed envelope, and the opened envelope with the w
 out. Co-winners fan out side by side. It ends with a curtain call of every winner. Vote counts
 never appear on screen.
 
-**Sound:** a snare roll builds while each envelope is sealed and keeps rolling until you tap. Opening it
-cuts the roll with a bass drum, a crash cymbal and a brass fanfare, and the opening title and the
-finale get their own fanfares. It's all synthesized in the browser, so there are no audio files and
-nothing to license. Fanfares only play when you step forward, so going back to fix a mis-tap doesn't
-replay one. Backstage has an on/off switch and a **Test sound** button (a short roll and a reveal)
-for setting the TV volume before guests are watching. The sound comes out of whatever is presenting:
-AirPlay and Chromecast mirroring carry it to the TV, but check your phone isn't on silent.
-
 **Controls:** tap or click anywhere on the right side, or press → / Space / Enter, to go forward; tap
-the left edge or press ← to go back. **F** toggles full screen, **M** mutes or unmutes, and **Esc** returns to backstage
+the left edge or press ← to go back. **F** toggles full screen, and **Esc** returns to backstage
 (press it twice when in full screen). If the page reloads mid-show, backstage offers to resume
 where you were. While the show runs, the device's screen is kept from going to sleep where the
 browser allows it.
