@@ -162,6 +162,48 @@
   opacity: 0.6;
 }
 
+.soundRow {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.soundToggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  font-family: var(--hh-font-body);
+  font-size: 17px;
+  color: var(--hh-ink);
+  cursor: pointer;
+}
+
+.soundToggle input {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--hh-oxblood);
+}
+
+.testSound {
+  min-height: 44px;
+  padding: 8px 16px;
+  background: transparent;
+  border: 1px solid var(--hh-gold-rule);
+  font-family: var(--hh-font-body);
+  font-size: 16px;
+  color: var(--hh-ink-soft);
+  cursor: pointer;
+}
+
+.testSound:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .help {
   margin-top: 24px;
   font-family: var(--hh-font-body);
@@ -535,6 +577,23 @@
   font-style: italic;
   font-size: min(7.4cqi, 3cqh);
   color: var(--hh-ink-soft);
+}
+
+/* A brief note for the host, e.g. after pressing M. */
+.toast {
+  position: absolute;
+  z-index: 3;
+  top: 3cqh;
+  right: 3cqw;
+  padding: 1cqh 1.4cqw;
+  background: rgba(13, 9, 6, 0.75);
+  border: 1px solid var(--hh-gold-dim);
+  font-family: var(--hh-font-caps);
+  font-weight: 600;
+  font-size: min(1.2cqw, 2.2cqh);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--hh-gold-rule);
 }
 
 /* Slide dots: enough for the host to know where they are, faint enough to ignore. */
